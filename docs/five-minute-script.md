@@ -1,11 +1,11 @@
 ---
 layout: default
-title: 五分钟汇报稿 · 调和函数最大值原理的 Lean 4 形式化
-description: 可直接照读的五分钟汇报稿与核心 Lean 4 代码
-permalink: /five-minute-script/
+title: n维欧氏空间调和函数最大值原理的 Lean 4 形式化
+description: 汇报稿与核心 Lean 4 代码
+permalink: /script/
 ---
 
-<p class="document-meta">可直接照读 / 约 5 分钟 / Lean 4</p>
+<p class="document-meta">Lean 4</p>
 
 <style>
 @media screen and (max-width: 760px) {
@@ -25,10 +25,10 @@ permalink: /five-minute-script/
 
 # 调和函数最大值原理的 Lean 4 形式化
 
-<p class="lead">以下正文可以直接照读。输入输出表和代码放在后半部分，汇报时按需展示。</p>
+<p class="lead">输入输出表和代码放在后半部分，汇报时按需展示。</p>
 
 <div class="quick-links script-actions">
-  <a href="#script">五分钟正文</a>
+  <a href="#script">正文</a>
   <a href="#input-output">输入与输出</a>
   <a href="#code">关键代码</a>
   <a href="{{ '/downloads/HarmonicPDEPrinciples_five_minute_script.pdf' | relative_url }}">下载 PDF</a>
@@ -36,9 +36,9 @@ permalink: /five-minute-script/
 
 ## 五分钟汇报正文 {#script}
 
-### 0:00–0:40　目标与输入输出
+### 1.　目标与输入输出
 
-大家好，我今天汇报调和函数最大值原理的 Lean 4 形式化。
+调和函数最大值原理的 Lean 4 形式化。
 
 核心局部 API 的输入是：\\(U\subset\mathbb R^n\\) 为开集，\\(x_0\in U\\)；函数 \\(u\\) 在 \\(\overline U\\) 连续，\\(x_0\\) 是闭包上的最大点，并且 \\(u\\) 满足球平均值性质。输出是
 \\[
@@ -48,7 +48,7 @@ permalink: /five-minute-script/
 \\]
 因此 Lean 返回的不只是“局部常值”，还包括正半径和闭球包含关系。
 
-### 0:40–1:30　文件一：局部常值
+### 2.　文件一：局部常值
 
 第一个文件 <code>LocalMaximumBall.lean</code> 建立这个局部定理。空间定义为 <code>EuclideanSpace ℝ (Fin n)</code>，它已经带有距离、内积、拓扑和 Lebesgue 体积；闭包、边界和球直接使用 mathlib。
 
@@ -58,7 +58,7 @@ permalink: /five-minute-script/
 \\]
 代码由不等式和积分相等得到 \\(u=M\\) 几乎处处，再用连续性提升为球上逐点相等，最终构造出所需的 \\(r\\)。
 
-### 1:30–2:05　文件二：二维均值性质
+### 3.　文件二：二维平均值公式
 
 第二个文件 <code>ComplexBallMeanValue.lean</code> 在二维自动生成均值性质。代码利用等距同构 \\(\mathbb C\simeq_{\mathbb R}\mathbb R^2\\)，证明调和性在坐标变换下保持，再结合圆周均值定理和极坐标积分，得到
 \\[
@@ -66,7 +66,7 @@ permalink: /five-minute-script/
 \\]
 所以二维调和函数可以直接调用局部常值定理，不需要额外传入 <code>hmean</code>。
 
-### 2:05–2:55　文件三：强最大值与边界最大值
+### 4.　文件三：强最大值与边界最大值
 
 第三个文件 <code>BoundaryMaximum.lean</code> 把局部常值推广到整个连通区域。定义最大值水平集
 \\[
@@ -79,14 +79,14 @@ A=\{x\in U\mid u(x)=u(x_0)\}.
 \sup u(\partial U)=\sup u(\overline U).
 \\]
 
-### 2:55–3:30　文件四：调和比较原理
+### 5.　文件四：调和函数的比较原理
 
 第四个文件 <code>HarmonicComparisonPrinciple.lean</code> 证明比较原理。若 \\(u,v\\) 调和且边界上 \\(u\le v\\)，令 \\(w=u-v\\)。调和性对减法封闭，所以 \\(w\\) 调和，边界条件变成 \\(w\le0\\)。对 \\(w\\) 使用边界最大值原理，得到
 \\[
 \forall x\in\overline U,\qquad u(x)\le v(x).
 \\]
 
-### 3:30–4:15　文件五：Poisson–Dirichlet 唯一性
+### 6.　文件五：Poisson–Dirichlet 唯一性
 
 第五个文件 <code>PoissonDirichletUniqueness.lean</code> 封装 \\(C^2(U)\\)、闭包连续性、方程 \\(-\Delta u=f\\) 和边界条件 \\(u=g\\)。
 
@@ -96,16 +96,16 @@ u_1=u_2\qquad\text{于 }\overline U.
 \\]
 因此该 Poisson–Dirichlet 问题至多有一个经典解。
 
-### 4:15–5:00　总结与后续工作
+### 7.　总结与后续工作
 
 五个文件形成以下证明链：
 
 ~~~text
-局部球均值论证
-  → 二维均值性质
-  → 强最大值与边界最大值
-  → 调和比较原理
-  → Poisson–Dirichlet 唯一性
+满足平均值公式得到在局部球上的结论
+  → U上的最大值与边界最大值的关系
+  → 二维欧氏空间调和函数的平均值公式（缺少高维情况）
+  → 调和函数的比较原理
+  → Poisson–Dirichlet 至多有一个经典解
 ~~~
 
 当前二维版本已经能从调和性自动得到全部结论。下一步是在一般 \\(\mathbb R^n\\) 中形式化球均值定理，消除一般维接口中的 <code>hmean</code>；随后补充均值性质对加法、减法和数乘的自动化，并继续研究 Poisson 解的存在性和 Sobolev 弱解。
