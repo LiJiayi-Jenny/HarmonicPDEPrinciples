@@ -1,0 +1,11 @@
+.DS_Store
+**/.DS_Store
+.lake/
+_site/
+
+# Unrelated reports are not part of the public harmonic-PDE site.
+HPV_age_structured_models_report.*
+HPV_research_directions_roadmap.*
+
+# The Markdown/Jekyll site supersedes this generated local preview.
+HarmonicPDEPrinciples2_five_lean_files_guide.html

@@ -1,0 +1,11 @@
+title: Harmonic PDE Principles
+description: 调和函数最大值原理、比较原理与 Poisson-Dirichlet 唯一性的 Lean 4 导读
+lang: zh-CN
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+exclude:
+  - README.md
+

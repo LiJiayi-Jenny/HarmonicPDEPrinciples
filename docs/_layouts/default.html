@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="{{ site.lang | default: 'zh-CN' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="description" content="{{ page.description | default: site.description | escape }}">
+  <title>{{ page.title | default: site.title | escape }}</title>
+  <link rel="stylesheet" href="{{ '/assets/site.css' | relative_url }}">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        macros: { cl: ['\\overline{#1}', 1] }
+      },
+      svg: { fontCache: 'none' },
+      options: { enableMenu: false }
+    };
+  </script>
+  <script defer src="{{ '/assets/mathjax-tex-svg.js' | relative_url }}"></script>
+  <script defer src="{{ '/assets/site.js' | relative_url }}"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到正文</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-name" href="{{ '/' | relative_url }}">Harmonic PDE Principles</a>
+      <nav class="site-nav" aria-label="文档导航">
+        <a href="#proof-map">证明地图</a>
+        <a href="#five-files">五个文件</a>
+        <a href="#evans">Evans</a>
+        <a href="#interactive">交互说明</a>
+        <a href="{{ '/downloads/HarmonicPDEPrinciples2_five_lean_files_guide.pdf' | relative_url }}">PDF</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="document">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <p>Lean 4 · mathlib · Classical harmonic analysis</p>
+  </footer>
+
+  <dialog id="lean-dialog" aria-labelledby="lean-dialog-title">
+    <div class="lean-dialog-header">
+      <div>
+        <strong id="lean-dialog-title">Lean Web</strong>
+        <span>mathlib-stable · Lean v4.32.0</span>
+      </div>
+      <div class="lean-dialog-actions">
+        <a id="lean-dialog-external" class="button secondary" target="_blank" rel="noopener noreferrer">新标签打开</a>
+        <button class="lean-dialog-close" type="button" aria-label="关闭 Lean Web" title="关闭">×</button>
+      </div>
+    </div>
+    <iframe
+      id="lean-frame"
+      title="Lean 4 在线编辑器"
+      src="about:blank"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      allow="clipboard-read; clipboard-write"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads">
+    </iframe>
+  </dialog>
+</body>
+</html>

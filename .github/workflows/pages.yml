@@ -1,0 +1,67 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/**"
+      - ".github/workflows/pages.yml"
+      - "*.lean"
+      - "HarmonicPDEPrinciples2_five_lean_files_guide.pdf"
+      - "mathjax-tex-svg.js"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Stage Lean sources and downloads
+        shell: bash
+        run: |
+          mkdir -p docs/source docs/downloads docs/assets
+          cp LocalMaximumBall.lean docs/source/
+          cp ComplexBallMeanValue.lean docs/source/
+          cp BoundaryMaximum.lean docs/source/
+          cp HarmonicComparisonPrinciple.lean docs/source/
+          cp PoissonDirichletUniqueness.lean docs/source/
+          cp HarmonicPDEPrinciples2_five_lean_files_guide.pdf docs/downloads/
+          cp mathjax-tex-svg.js docs/assets/
+
+      - name: Build Markdown site
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./docs
+          destination: ./_site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./_site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
